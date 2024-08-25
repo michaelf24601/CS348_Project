@@ -3,4 +3,4 @@ react-frontend/node_modules/
 server/node_modules/
 
 #enviroment variables
-.env
+server/.env
