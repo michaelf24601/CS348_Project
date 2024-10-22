@@ -1,0 +1,29 @@
+version: '3'
+services:
+  # React frontend service
+  frontend:
+    build:
+      context: ./frontend  # Path to the frontend directory
+    ports:
+      - "2000:80"  # Map host port 3000 to container port 80
+    depends_on:
+      - backend  # Ensure backend starts before frontend
+    networks:
+      - app-network
+
+  # Express.js backend service
+  backend:
+    build:
+      context: ./server  # Path to the backend directory
+    ports:
+      - "5000:8080"  # Map host port 5000 to container port 5000
+    volumes:
+      - ./database:/usr/src/app/database  # Ensure SQLite persists on the host
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=development
+
+networks:
+  app-network:
+    driver: bridge

@@ -8,7 +8,7 @@ function Message() {
     useEffect(() => {
         const fetchMessage = async () => {
             try {
-                const url = "http://localhost:8080/test/hello";
+                const url = "http://backend:8080/test/hello";
                 const response = await axios.get(url);
                 console.log(response.data.message);
                 setMessage(response.data.message);
