@@ -1,0 +1,60 @@
+h1, h2, h3, h4, h5, h6, a, p {
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+
+.homepage-container {
+    background-color: red;
+    width: 100vw;
+    height: 100vh;
+}
+
+.mainNav-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100vw;
+    height: auto;
+    background-color: rgb(106, 160, 113);
+}
+
+.mainNav-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 100%;
+    height: 40px;
+}
+
+.mainNav-listItem {
+    height: 100%;
+}
+
+.mainNav-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    height: 100%;
+    width: 100px;
+    cursor: pointer;
+}
+
+.mainNav-link:hover {
+    text-decoration: underline;
+}
+
+.mainNav-titleContainer {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+}
+
+.mainNav-header {
+    font-weight: 700;
+    font-size: 20px;
+}

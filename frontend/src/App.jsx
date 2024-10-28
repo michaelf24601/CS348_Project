@@ -1,9 +1,12 @@
-import Message from "./Message";
+import React from "react";
+import HomePage from "./Pages/HomePage";
+import MainNav from "./Components/MainNav";
 
 function App() {
   return (
     <div>
-      <Message />
+      <MainNav />
+      <HomePage />
     </div>
   );
 }
