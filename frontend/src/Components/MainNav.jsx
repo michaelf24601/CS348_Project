@@ -1,4 +1,8 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+
+import "../Styles/nav.css"
+
 
 const MainNav = () => {
 
@@ -9,14 +13,32 @@ const MainNav = () => {
                     My recipe app!
                 </h1>
             </div>
-            <ul className="mainNav-list">
-                <li className="mainNav-listItem">
-                    <a className="mainNav-link">Ingredients</a>
-                </li>
-                <li className="mainNav-listItem">
-                    <a className="mainNav-link">Recipies</a>
-                </li>
-            </ul>
+            <nav className="mainNav-list">
+                <NavLink 
+                    to="/home"
+                    className={({ isActive }) =>
+                        isActive ? "mainNav-link active-link": "mainNav-link"
+                    }
+                >
+                    Home
+                </NavLink>
+                <NavLink 
+                    to="/ingredients"
+                    className={({ isActive }) =>
+                        isActive ? "mainNav-link active-link": "mainNav-link"
+                    }
+                >
+                    Ingredients
+                </NavLink>
+                <NavLink  
+                    to="/recipes"
+                    className={({ isActive }) =>
+                            isActive ? "mainNav-link active-link": "mainNav-link"
+                        }
+                    >
+                        Recipies
+                    </NavLink>
+            </nav>
         </div>
     );
 }

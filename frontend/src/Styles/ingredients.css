@@ -1,0 +1,13 @@
+.ingredientsPage-container {
+    background-color: tan;
+    width: 100vw;
+    height: 100vh;
+    padding: 10px;
+}
+
+.ingredientsPage-container h1 {
+    font-weight: 700;
+    font-size: 24px;
+    margin: 10px 0 10px 0;
+}
+

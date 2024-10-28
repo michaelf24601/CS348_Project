@@ -1,0 +1,9 @@
+.homepage-container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.homepage-container h1 {
+    font-size: 32px;
+    margin: 10px;
+}
