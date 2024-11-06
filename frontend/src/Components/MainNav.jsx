@@ -15,12 +15,28 @@ const MainNav = () => {
             </div>
             <nav className="mainNav-list">
                 <NavLink 
-                    to="/home"
+                    to="/add"
                     className={({ isActive }) =>
                         isActive ? "mainNav-link active-link": "mainNav-link"
                     }
                 >
-                    Home
+                    Add
+                </NavLink>
+                <NavLink 
+                    to="/edit"
+                    className={({ isActive }) =>
+                        isActive ? "mainNav-link active-link": "mainNav-link"
+                    }
+                >
+                    Edit
+                </NavLink>
+                <NavLink 
+                    to="/delete"
+                    className={({ isActive }) =>
+                        isActive ? "mainNav-link active-link": "mainNav-link"
+                    }
+                >
+                    Delete
                 </NavLink>
                 <NavLink 
                     to="/ingredients"
@@ -30,14 +46,6 @@ const MainNav = () => {
                 >
                     Ingredients
                 </NavLink>
-                <NavLink  
-                    to="/recipes"
-                    className={({ isActive }) =>
-                            isActive ? "mainNav-link active-link": "mainNav-link"
-                        }
-                    >
-                        Recipies
-                    </NavLink>
             </nav>
         </div>
     );

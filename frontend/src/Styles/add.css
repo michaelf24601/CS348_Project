@@ -1,0 +1,19 @@
+.addPage-container {
+    background-color: tan;
+    width: 100vw;
+    height: 100vh;
+    padding: 10px;
+}
+
+.addPage-container h1 {
+    font-weight: 700;
+    font-size: 24px;
+    margin: 10px 0 10px 0;
+}
+
+.errorText {
+    color:red;
+}
+.successText {
+    color:green;
+}
