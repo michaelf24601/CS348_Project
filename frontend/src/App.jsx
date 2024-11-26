@@ -13,10 +13,12 @@ function App() {
     <div>
       <MainNav />
       <Routes>
+        {/*
         <Route path="/" element={<AddPage />} />
         <Route path="/add" element={<AddPage />} />
         <Route path="/edit" element={<EditPage />} />
         <Route path="/delete" element={<DeletePage />} />
+        */}
         <Route path="/ingredients" element={<IngredientsPage />} />
       </Routes>
     </div>

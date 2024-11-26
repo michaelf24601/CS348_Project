@@ -22,14 +22,20 @@ const IngredientsPage = () => {
 
   return (
     <div className="ingredientsPage-container">
-      <h2>Ingredients List</h2>
-      <ul className="ingredientsPage-ingredientList">
-        {ingredients.map((ingredient) => (
-          <li key={ingredient.ingredient_id} className="ingredientListItem">
-            {ingredient.ingredient_name}
-          </li>
-        ))}
-      </ul>
+      <div className="ingredientsPage-halfSection">
+        <div className="ingredientsPage-searchBarContainer"> 
+          <input 
+            type="text"
+            className="ingredientsPage-searchBar"
+          />
+        </div>
+      </div>
+      <div className="ingredientsPage-halfSection">
+        <p>test</p>
+      </div>
+      
+
+      
     </div>
   );
 };

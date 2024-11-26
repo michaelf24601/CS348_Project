@@ -15,30 +15,6 @@ const MainNav = () => {
             </div>
             <nav className="mainNav-list">
                 <NavLink 
-                    to="/add"
-                    className={({ isActive }) =>
-                        isActive ? "mainNav-link active-link": "mainNav-link"
-                    }
-                >
-                    Add
-                </NavLink>
-                <NavLink 
-                    to="/edit"
-                    className={({ isActive }) =>
-                        isActive ? "mainNav-link active-link": "mainNav-link"
-                    }
-                >
-                    Edit
-                </NavLink>
-                <NavLink 
-                    to="/delete"
-                    className={({ isActive }) =>
-                        isActive ? "mainNav-link active-link": "mainNav-link"
-                    }
-                >
-                    Delete
-                </NavLink>
-                <NavLink 
                     to="/ingredients"
                     className={({ isActive }) =>
                         isActive ? "mainNav-link active-link": "mainNav-link"
