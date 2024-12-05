@@ -30,6 +30,19 @@ const addIngredient = async (req, res) => {
             date_added,
         } = req.body.newIngredient;
 
+        //check if an ingredient with the name already exists. We don't want two ingredients of the same name in the database
+        const existingIngredient = await Ingredient.findOne({
+            where: { ingredient_name }
+        });
+
+        if (existingIngredient) {
+            return res.status(400).json({
+                error: "An ingredient with this name already exists."
+            });
+        }
+
+        //add the new ingredient
+
         const newIngredient = await Ingredient.create({
             ingredient_name,
             serving_size,
@@ -43,11 +56,11 @@ const addIngredient = async (req, res) => {
             monounsaturated_fat,
             protein,
             date_added,
-        }); //add ingredient
-        
+        }); 
+
         res.status(200).json(newIngredient);
     } catch (error) {
-        console.log("Error adding ingredientL:", error);
+        console.log("Error adding ingredient:", error);
         res.status(500).json({error: "Failed to add ingredient to database."});
     }
 };
@@ -56,27 +69,37 @@ const editIngredient = async (req, res) => {
     try {
         console.log("editIngredient call");
         const updatedData = req.body.updatedData;
-        const ingredient_name = updatedData.ingredient_name;
+        
 
         const db = await open({
             filename: databasePath,
             driver: sqlite3.Database,
         });
 
-        const findQuery = "SELECT * FROM ingredients WHERE ingredient_name = ?";
-        const ingredient = await db.get(findQuery, [ingredient_name]);
+        //check if an ingredient with the name already exists (cannot change name to one that already exists)
+        const existingQuery = "SELECT ingredient_name FROM ingredients WHERE ingredient_name = ?"
+        const existingIngredient = await db.get(existingQuery, [updatedData.ingredient_name])
+
+        if (existingIngredient) {
+            return res.status(400).json({error: "An ingredient already exists with that name"});
+        }
+
+        //find the ingredient by ID
+        const findQuery = "SELECT * FROM ingredients WHERE ingredient_id = ?";
+        const ingredient = await db.get(findQuery, [updatedData.ingredient_id]);
 
         if (!ingredient) {
             return res.status(404).json({error : "Ingredient not found"});
         }
 
+        //update the ingredient
         const updateQuery = `
             UPDATE ingredients
             SET serving_size = ?, serving_size_unit = ?, carbs = ?, sugar = ?, fiber = ?, fat = ?,
                 saturated_fat = ?, polyunsaturated_fat = ?, monounsaturated_fat = ?, protein = ?
-            WHERE ingredient_name = ?`;
+            WHERE ingredient_id = ?`;
 
-        await db.run(updateQuery, [
+        const updatedIngredient = await db.run(updateQuery, [
             updatedData.serving_size,
             updatedData.serving_size_unit,
             updatedData.carbs,
@@ -87,12 +110,12 @@ const editIngredient = async (req, res) => {
             updatedData.polyunsaturated_fat,
             updatedData.monounsaturated_fat,
             updatedData.protein,
-            ingredient_name,
+            updatedData.ingredient_id,
         ]);
 
         //await ingredient.update(updatedData); //update ingredient
 
-        res.status(200).json({message: "Ingredient updated successfully", ingredient});
+        res.status(200).json({message: "Ingredient updated successfully", ingredient: updatedIngredient});
     } catch (error) {
         console.log("Error editing ingredient:", error);
         res.status(500).json({error: "Failed to update database with edited ingredient."});
@@ -102,10 +125,10 @@ const editIngredient = async (req, res) => {
 const deleteIngredient = async (req, res) => {
     try {
         console.log("deleteIngredient call");
-        const ingredient_name = req.body.ingredient_name
+        const ingredient_id = req.body.ingredient_id
 
         const ingredient = await Ingredient.findOne({
-            where: { ingredient_name },
+            where: { ingredient_id },
         });
 
         if (!ingredient) {

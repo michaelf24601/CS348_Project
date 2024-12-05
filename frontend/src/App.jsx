@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import MainNav from "./Components/MainNav";
+import "./Styles/app.css"
 
 import AddPage from "./Pages/AddPage";
 import EditPage from "./Pages/EditPage";
@@ -10,7 +11,7 @@ import IngredientsPage from "./Pages/IngredientsPage";
 
 function App() {
   return (
-    <div>
+    <div className="OneContainerToRuleThemAll">
       <MainNav />
       <Routes>
         {/*

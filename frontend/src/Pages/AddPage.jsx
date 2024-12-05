@@ -1,3 +1,5 @@
+/* AddPage.jsx */
+
 import React, { useState } from "react";
 import "../Styles/add.css"
 import { requestService } from "../Services/requestService";
@@ -58,6 +60,11 @@ const AddPage = () => {
             setSuccessMessage("Ingredient Added!");
             setFormData(initialFormData);
         } catch (error) {
+            const status = error.response?.status;
+            if (status === 400) {
+                setErrorMessage("An ingredient with that name already exists. Cannot add duplicate.");
+                return;
+            }
             const errmsg = requestService.getGenericErrorMessage(error);
             setErrorMessage(errmsg);
         }

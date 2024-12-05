@@ -64,6 +64,15 @@ const Ingredient = sequelize.define(
   {
     tableName: "ingredients", // Table name in the database
     timestamps: false,        // Disable Sequelize's automatic timestamps
+    indexes: [ 
+      {
+        fields:["ingredient_id"], // Index on ingredient_id
+      },
+      {
+        unique: true, 
+        fields: ["ingredient_name"], // Index on ingredient_name that enforces uniqueness
+      },
+    ],
   }
 );
 
