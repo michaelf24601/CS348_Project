@@ -2,26 +2,9 @@ import React, { useState } from "react"
 import "../Styles/ingredients.css"
 import { requestService } from "../Services/requestService";
 
-const IngredientListItem = ({ingredientData, editIngredient, setErrorMessage, setSuccessMessage}) => {
+const IngredientListItem = ({ingredientData, deleteIngredient, editIngredient}) => {
 
     const [showDropdown, setShowDropdown] = useState(false);
-
-    const deleteIngredient = async () => {
-        setErrorMessage("");
-        setSuccessMessage("");
-
-        try {
-            const request = {
-                ingredient_id: ingredientData.ingredient_id
-            }
-            const response = await requestService.deleteIngredient(request);
-            setSuccessMessage("Ingredient Deleted!");
-        } catch (error) {
-            console.error(error);
-            const errmsg = requestService.getGenericErrorMessage(error);
-            setErrorMessage(errmsg);
-        }
-    }
 
     return (
         <li className="ingredientsPage-ingredientListItem">
@@ -33,11 +16,17 @@ const IngredientListItem = ({ingredientData, editIngredient, setErrorMessage, se
                     <p>{ingredientData.ingredient_name}</p>
                     <button
                         className="ingredientsPage-searchBarButton"
-                        onClick={() => editIngredient(ingredientData)}
+                        onClick={(e) => {
+                            e.stopPropagation(); //needed otherwise this will trigger dropdown
+                            editIngredient(ingredientData);
+                        }}
                     >Edit</button>
                     <button
                         className="ingredientsPage-searchBarButton"
-                        onClick={() => deleteIngredient(ingredientData)}
+                        onClick={(e) => {
+                            e.stopPropagation(); //needed otherwise this will trigger dropdown
+                            deleteIngredient(ingredientData);
+                        }}
                     >Delete</button>
                     <span></span>
                 </div>

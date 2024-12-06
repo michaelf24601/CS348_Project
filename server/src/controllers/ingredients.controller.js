@@ -69,16 +69,15 @@ const editIngredient = async (req, res) => {
     try {
         console.log("editIngredient call");
         const updatedData = req.body.updatedData;
-        
 
         const db = await open({
             filename: databasePath,
             driver: sqlite3.Database,
         });
 
-        //check if an ingredient with the name already exists (cannot change name to one that already exists)
-        const existingQuery = "SELECT ingredient_name FROM ingredients WHERE ingredient_name = ?"
-        const existingIngredient = await db.get(existingQuery, [updatedData.ingredient_name])
+        //check if an another ingredient with the name already exists (cannot change name to one that already exists)
+        const existingQuery = "SELECT ingredient_name FROM ingredients WHERE ingredient_name = ? AND ingredient_id != ?"
+        const existingIngredient = await db.get(existingQuery, [updatedData.ingredient_name, updatedData.ingredient_id])
 
         if (existingIngredient) {
             return res.status(400).json({error: "An ingredient already exists with that name"});
@@ -95,11 +94,13 @@ const editIngredient = async (req, res) => {
         //update the ingredient
         const updateQuery = `
             UPDATE ingredients
-            SET serving_size = ?, serving_size_unit = ?, carbs = ?, sugar = ?, fiber = ?, fat = ?,
-                saturated_fat = ?, polyunsaturated_fat = ?, monounsaturated_fat = ?, protein = ?
+            SET ingredient_name = ?, serving_size = ?, serving_size_unit = ?, carbs = ?, sugar = ?, 
+                fiber = ?, fat = ?, saturated_fat = ?, polyunsaturated_fat = ?, 
+                monounsaturated_fat = ?, protein = ?
             WHERE ingredient_id = ?`;
 
-        const updatedIngredient = await db.run(updateQuery, [
+        await db.run(updateQuery, [
+            updatedData.ingredient_name,
             updatedData.serving_size,
             updatedData.serving_size_unit,
             updatedData.carbs,
@@ -115,7 +116,7 @@ const editIngredient = async (req, res) => {
 
         //await ingredient.update(updatedData); //update ingredient
 
-        res.status(200).json({message: "Ingredient updated successfully", ingredient: updatedIngredient});
+        res.status(200).json({message: "Ingredient updated successfully"});
     } catch (error) {
         console.log("Error editing ingredient:", error);
         res.status(500).json({error: "Failed to update database with edited ingredient."});

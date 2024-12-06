@@ -83,6 +83,25 @@ const IngredientsPage = () => {
     setShowEditor(true);
   }
 
+  /* Called by an ingredient list item component when the user clicks delete */
+  const deleteIngredient = async (ingredientObj) => {
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    try {
+        const request = {
+            ingredient_id: ingredientObj.ingredient_id
+        }
+        const response = await requestService.deleteIngredient(request);
+        await fetchAllIngredients();
+        setSuccessMessage("Ingredient Deleted!");
+    } catch (error) {
+        console.error(error);
+        const errmsg = requestService.getGenericErrorMessage(error);
+        setErrorMessage(errmsg);
+    }
+}
+
   //component builders
 
   /*
@@ -102,8 +121,7 @@ const IngredientsPage = () => {
           key={ingredientObj.ingredient_id}
           ingredientData={ingredientObj}
           editIngredient={editIngredient}
-          setErrorMessage={setErrorMessage}
-          setSuccessMessage={setSuccessMessage}
+          deleteIngredient={deleteIngredient}
         />
       )
     });
