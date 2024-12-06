@@ -9,30 +9,30 @@ import { Sequelize } from "sequelize";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const databasePath = path.resolve(__dirname, '../../database/main.db');
+console.log("Database path:", databasePath);
 
-// Initialize Sequelize with SQLite
-const sequelize = new Sequelize({
-    dialect: "sqlite",
-    storage: databasePath,
-  });
+//databse connection with Sequelize
 
-  // Test the connection to Sequelize
-(async () => {
+const connectSequelize = async () => {
     try {
-      await sequelize.authenticate();
-      console.log("Connection to SQLite has been established successfully with Sequelize.");
+        const sequelize = new Sequelize({
+            dialect: "sqlite",
+            storage: databasePath,
+            logging: console.log, 
+        });
+        await sequelize.authenticate();
+        console.log("Connection to database with Sequelize sucessful.");
+        return sequelize;
     } catch (error) {
-      console.error("Unable to connect to the database:", error);
+        console.error("Unable to connect to the database:", error);
+        throw error;
     }
-  })();
+}
 
+//Database connection with SQLite
 
-const connectToDB = async () => {
+const connectSQLite = async () => {
     try {
-        console.log("before create")
-
-        console.log("Using database file at:", databasePath);
-
         const db = await open({
             filename: databasePath,
             driver: sqlite3.Database
@@ -53,13 +53,28 @@ const connectToDB = async () => {
                 VALUES ("Hello World!");
             `);
         }
-
+        console.log("Connection to databse with SQLite sucessful.");
         return db;
     } catch (error) {
-        console.log("Error connecting to the database", error);
+        console.error("Error connecting to the database", error);
         throw error;
     }
 };
 
+//export 
 
-export default sequelize;
+let sequelize;
+export const getSequelize = async () => {
+    if (!sequelize) {
+        sequelize = await connectSequelize();
+    }
+    return sequelize;
+}
+
+let db;
+export const getSQLite = async () => {
+    if (!db) {
+        db = await connectSQLite();
+    }
+    return db;
+}

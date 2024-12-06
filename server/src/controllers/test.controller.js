@@ -1,8 +1,8 @@
-import connectToDB from "../../db/db.js";
+import { getSQLite } from "../../db/db.js";
 
 const helloWorld = async (req, res) => {
     try {
-        const db = await connectToDB();
+        const db = await getSQLite();
         const message = await db.get("SELECT * FROM hello");
         //get will return the first result row only
         res.status(200).json(message);

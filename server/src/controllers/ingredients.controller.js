@@ -5,11 +5,7 @@ import sqlite3 from "sqlite3";
 import { open } from "sqlite";
 import path from "path";
 import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const databasePath = path.resolve(__dirname, "../../../database/main.db");
-console.log("Database path:", databasePath);
+import { getSQLite } from "../../db/db.js";
 
 
 const addIngredient = async (req, res) => {
@@ -70,10 +66,7 @@ const editIngredient = async (req, res) => {
         console.log("editIngredient call");
         const updatedData = req.body.updatedData;
 
-        const db = await open({
-            filename: databasePath,
-            driver: sqlite3.Database,
-        });
+        const db = await getSQLite();
 
         //check if an another ingredient with the name already exists (cannot change name to one that already exists)
         const existingQuery = "SELECT ingredient_name FROM ingredients WHERE ingredient_name = ? AND ingredient_id != ?"

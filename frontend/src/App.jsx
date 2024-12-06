@@ -20,6 +20,7 @@ function App() {
         <Route path="/edit" element={<EditPage />} />
         <Route path="/delete" element={<DeletePage />} />
         */}
+        <Route path="/" element={<IngredientsPage />} />
         <Route path="/ingredients" element={<IngredientsPage />} />
       </Routes>
     </div>
