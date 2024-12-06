@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 
-const HOST = "localhost:8080";
+const HOST = "backend:8080";
 const API_URL = `http://${HOST}/api/ingredients`;
 
 //util
