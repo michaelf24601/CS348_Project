@@ -74,16 +74,12 @@ const editIngredient = async (req, res) => {
     try {
         console.log("editIngredient call");
 
-        const transaction = await Ingredient.sequelize.transaction({
-            isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED, // Isolation level
-        });
-
         const updatedData = req.body.updatedData;
 
         const db = await getSQLite();
 
         //begin transaction
-        await transaction.commit();
+        await db.exec("BEGIN TRANSACTION;");
 
         //check if an another ingredient with the name already exists (cannot change name to one that already exists)
         const existingQuery = "SELECT ingredient_name FROM ingredients WHERE ingredient_name = ? AND ingredient_id != ?"
