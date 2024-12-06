@@ -6,7 +6,7 @@ import { open } from "sqlite";
 import path from "path";
 import { fileURLToPath } from "url";
 import { getSequelize, getSQLite } from "../../db/db.js";
-import { Sequelize } from "sequelize";
+import { QueryTypes, Sequelize } from "sequelize";
 
 
 const addIngredient = async (req, res) => {
@@ -76,24 +76,36 @@ const editIngredient = async (req, res) => {
 
         const updatedData = req.body.updatedData;
 
-        const db = await getSQLite();
+        const sequelize = await getSequelize();
 
         //begin transaction
-        await db.exec("BEGIN TRANSACTION;");
+        const transaction = await Ingredient.sequelize.transaction({
+            isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED,
+        });
 
         //check if an another ingredient with the name already exists (cannot change name to one that already exists)
-        const existingQuery = "SELECT ingredient_name FROM ingredients WHERE ingredient_name = ? AND ingredient_id != ?"
-        const existingIngredient = await db.get(existingQuery, [updatedData.ingredient_name, updatedData.ingredient_id])
+        const existingQuery = "SELECT ingredient_name FROM ingredients WHERE ingredient_name = ? AND ingredient_id != ?";
+        const existingIngredients = await sequelize.query(
+            existingQuery, 
+            { replacements: [ updatedData.ingredient_name, updatedData.ingredient_id ],
+            type: QueryTypes.SELECT, 
+            transaction 
+        });
 
-        if (existingIngredient) {
+        if (existingIngredients.length > 0) {
             return res.status(400).json({error: "An ingredient already exists with that name"});
         }
 
         //find the ingredient by ID
         const findQuery = "SELECT * FROM ingredients WHERE ingredient_id = ?";
-        const ingredient = await db.get(findQuery, [updatedData.ingredient_id]);
+        const ingredients = await sequelize.query(
+            findQuery, 
+            { replacements: [updatedData.ingredient_id], 
+            type: QueryTypes.SELECT,
+            transaction
+        });
 
-        if (!ingredient) {
+        if (ingredients.length < 1) {
             return res.status(404).json({error : "Ingredient not found"});
         }
 
@@ -105,7 +117,7 @@ const editIngredient = async (req, res) => {
                 monounsaturated_fat = ?, protein = ?
             WHERE ingredient_id = ?`;
 
-        await db.run(updateQuery, [
+        await sequelize.query(updateQuery, { replacements: [
             updatedData.ingredient_name,
             updatedData.serving_size,
             updatedData.serving_size_unit,
@@ -118,15 +130,14 @@ const editIngredient = async (req, res) => {
             updatedData.monounsaturated_fat,
             updatedData.protein,
             updatedData.ingredient_id,
-        ]);
+        ], type: QueryTypes.UPDATE, transaction});
 
-        //commit the transaction
-        await db.exec("COMMIT;");
+        await transaction.commit();
 
         res.status(200).json({message: "Ingredient updated successfully"});
     } catch (error) {
         console.log("Error editing ingredient:", error);
-        await db.exec("ROLLBACK"); //rollback the transaction if there was an error
+        await transaction.rollback(); //rollback the transaction if there was an error
         res.status(500).json({error: "Failed to update database with edited ingredient."});
     }
 };
