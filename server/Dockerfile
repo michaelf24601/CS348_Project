@@ -14,6 +14,7 @@ COPY . .
 # expose the port the Express app runs on
 EXPOSE 8080
 
+RUN apk add --no-cache sqlite
 RUN npm rebuild sqlite3
 
 # 6. Start the Express app

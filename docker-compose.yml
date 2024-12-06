@@ -16,7 +16,7 @@ services:
     build:
       context: ./server  # Path to the backend directory
     volumes:
-      - ./database:/usr/src/app/database  # Ensure SQLite persists on the host
+      - ./database:/usr/src/database  # Ensure SQLite persists on the host
     networks:
       - app-network
     environment:
