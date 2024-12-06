@@ -1,8 +1,8 @@
 import axios from "axios";
 import React from "react";
 
-const HOST = "backend:8080";
-const API_URL = `http://${HOST}/api/ingredients`;
+//const HOST = "backend:8080";
+const API_URL = `/api/ingredients`; //alow ngix to proxy
 
 //util
 const getGenericErrorMessage = (error) => {
