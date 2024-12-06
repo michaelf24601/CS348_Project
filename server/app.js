@@ -16,6 +16,17 @@ const PORT = 8080;
 app.use(cors()); //allow access from same origin
 app.use(express.json());
 
+// Configure CORS
+const corsOptions = {
+    origin: "*", 
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    allowedHeaders: ["Content-Type", "Authorization"], 
+};
+  
+app.use(cors(corsOptions));
+app.use(express.json());
+app.options("*", cors(corsOptions));
+
 //initialize everything
 const initializeApp = async () => {
     try {
@@ -39,6 +50,8 @@ const initializeApp = async () => {
             res.json({'message': 'ok'});
         });
         console.log("Routes initialized");
+
+        app.options("*", cors(corsOptions)); // Preflight requests
 
         //start the server
         app.listen(

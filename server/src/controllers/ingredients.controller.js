@@ -140,6 +140,7 @@ const deleteIngredient = async (req, res) => {
 
 const getAllIngredients = async (req, res) => {
     try {
+      console.log("recieved request for all ingredients");
       const ingredients = await Ingredient.findAll(); 
       res.status(200).json(ingredients);
     } catch (error) {
