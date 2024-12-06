@@ -14,6 +14,8 @@ COPY . .
 #build React frontend for production
 RUN npm run build 
 
+RUN echo "Build Output:" && ls -l /usr/src/app/dist
+
 #use nginx image to serve the build files
 FROM nginx:alpine 
 
