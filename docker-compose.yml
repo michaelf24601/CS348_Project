@@ -2,7 +2,7 @@ services:
   # Frontend built and served with Nginx
   nginx:
     build:
-      content: ./frontend
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "80:80"  # Expose port 80 for HTTP traffic
